@@ -21,6 +21,7 @@ freely, subject to the following restrictions:
 #ifndef UTILS_HPP_INCLUDED
 #define UTILS_HPP_INCLUDED
 
+#include <cstdio>
 #include <cstdlib>
 #include <png.h>
 

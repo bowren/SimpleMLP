@@ -28,52 +28,52 @@ namespace Utils
 
         /*Open the image file with read premissions on the file
         as a binary because the png_init_io takes a binary file only*/
-        FILE* imageFile = fopen(fileName, "rb");
+        std::FILE* imageFile = std::fopen(fileName, "rb");
         if (imageFile == 0)
         {
-            printf("Error: Problem opening file\n");
+            std::printf("Error: Problem opening file\n");
             return nullptr;
         }
 
-        fread(header, 1, 8, imageFile);
+        std::fread(header, 1, 8, imageFile);
         if (png_sig_cmp(header, 0, 8))
         {
-            printf("Error: File loaded is not a png\n");
-            fclose(imageFile);
+            std::printf("Error: File loaded is not a png\n");
+            std::fclose(imageFile);
             return nullptr;
         }
 
         png_structp pngPtr = png_create_read_struct(PNG_LIBPNG_VER_STRING, 0, 0, 0);
         if (!pngPtr)
         {
-            printf("Error: Problem creating png read struct\n");
-            fclose(imageFile);
+            std::printf("Error: Problem creating png read struct\n");
+            std::fclose(imageFile);
             return nullptr;
         }
 
         png_infop infoPtr = png_create_info_struct(pngPtr);
         if (!infoPtr)
         {
-            printf("Error: Problem creating png info struct\n");
+            std::printf("Error: Problem creating png info struct\n");
             png_destroy_read_struct(&pngPtr, 0, 0);
-            fclose(imageFile);
+            std::fclose(imageFile);
             return nullptr;
         }
 
         png_infop endInfo = png_create_info_struct(pngPtr);
         if (!endInfo)
         {
-            printf("Error: Problem creating png info struct for end info\n");
+            std::printf("Error: Problem creating png info struct for end info\n");
             png_destroy_read_struct(&pngPtr, &infoPtr, 0);
-            fclose(imageFile);
+            std::fclose(imageFile);
             return nullptr;
         }
 
         if (setjmp(png_jmpbuf(pngPtr)))
         {
-            printf("Error: error setting jmp to pngPtr\n");
+            std::printf("Error: error setting jmp to pngPtr\n");
             png_destroy_read_struct(&pngPtr, &infoPtr, &endInfo);
-            fclose(imageFile);
+            std::fclose(imageFile);
             return nullptr;
         }
 
@@ -111,7 +111,7 @@ namespace Utils
 
         png_destroy_read_struct(&pngPtr, &infoPtr, &endInfo);
         delete[] rowPointers;
-        fclose(imageFile);
+        std::fclose(imageFile);
 
         return parsedImage;
     }
